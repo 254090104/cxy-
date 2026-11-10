@@ -71,3 +71,4 @@ app.get('/api/stat',async (req,res)=>{
 app.listen(3000,()=>{
   console.log("后端启动：http://localhost:3000")
 })
+// 新增：统计接口优化
