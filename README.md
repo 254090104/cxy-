@@ -6,5 +6,7 @@
 
 技术栈：Vue3 + Node.js + PostgreSQL
 
+新增：换班状态提示
+
 
 
