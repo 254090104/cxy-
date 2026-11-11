@@ -1,35 +1,29 @@
+-- 清理旧表
+DROP TABLE IF EXISTS new_schedule CASCADE;
+DROP TABLE IF EXISTS new_member CASCADE;
+DROP TABLE IF EXISTS new_dorm CASCADE;
+
+-- 宿舍表
+CREATE TABLE new_dorm(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50)
+);
+
 -- 成员表
-CREATE TABLE member (
+CREATE TABLE new_member(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    room VARCHAR(20) NOT NULL,
-    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    dorm_id INT REFERENCES new_dorm(id),
+    name VARCHAR(50)
 );
 
--- 排班表
-CREATE TABLE schedule (
+-- 值日排班表
+CREATE TABLE new_schedule(
     id SERIAL PRIMARY KEY,
-    member_id INT NOT NULL REFERENCES member(id),
-    work_date DATE NOT NULL,
-    status VARCHAR(20) DEFAULT '待完成',
-    UNIQUE(member_id, work_date)
+    dorm_id INT REFERENCES new_dorm(id),
+    member_id INT REFERENCES new_member(id),
+    sdate DATE,
+    status VARCHAR(20)
 );
 
--- 换班申请表
-CREATE TABLE change_apply (
-    id SERIAL PRIMARY KEY,
-    from_id INT NOT NULL REFERENCES member(id),
-    to_id INT NOT NULL REFERENCES member(id),
-    work_date DATE NOT NULL,
-    apply_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    state VARCHAR(20) DEFAULT '待审核'
-);
-
--- 打扫记录表
-CREATE TABLE clean_record (
-    id SERIAL PRIMARY KEY,
-    schedule_id INT NOT NULL REFERENCES schedule(id),
-    result VARCHAR(20),
-    remark TEXT,
-    record_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- 初始化宿舍数据
+INSERT INTO new_dorm(name) VALUES ('301宿舍'), ('302宿舍');
